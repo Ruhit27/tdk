@@ -1,12 +1,17 @@
 import Link from "next/link";
 import { TriangleAlert } from "lucide-react";
 import { aboutPage, contactPage, servicePages } from "@/content/pages";
-import { posts, type Post } from "@/content/blog";
+import { dayListPosts, doctorListPosts, guides, hospitalListPosts, IMAGE_SIZE, priceListPosts, readingMinutes, shareImage, type Post } from "@/content/blog";
 import { specialtyBySlug } from "@/data/specialties";
+import { dayNames, doctorBySlug, doctorName, formatHours, placeName } from "@/lib/doctors";
+import { resolveQuery, type DoctorQuery } from "@/lib/doctor-groups";
+import { cardData } from "@/components/DoctorCard";
+import { DoctorCardView } from "@/components/DoctorCardView";
 import { dictionaries, fill } from "@/lib/dictionary";
 import { bnDigits } from "@/lib/bangla";
 import { href, site, whatsappLink, type Lang } from "@/lib/site";
 import { PageHeader } from "@/components/PageHeader";
+import { FaqsSection } from "@/components/ui/faqs-1";
 import { ArrowIcon, CheckIcon, PhoneIcon, WhatsAppIcon } from "@/components/icons";
 import { AppIcon, IconTile, toneText } from "@/components/AppIcon";
 
@@ -138,39 +143,166 @@ export function BlogIndexView({ lang }: { lang: Lang }) {
     <>
       <PageHeader lang={lang} title={t.blog.title} body={t.blog.body} crumbs={[{ label: t.nav.blog }]} />
       <div className="container-x mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {posts.map((p) => (
-          <Link key={p.slug} href={href(lang, `/blog/${p.slug}`)} className="card group flex flex-col p-5 transition hover:-translate-y-0.5 hover:shadow-lg">
-            <IconTile name={p.icon} tone={p.tone} className="size-12 rounded-2xl" iconClassName="size-6" />
-            <h2 className="mt-4 font-semibold leading-snug">{p[lang].title}</h2>
-            <p className="mt-2 flex-1 text-sm text-ink-2">{p[lang].excerpt}</p>
-            <p className="mt-4 flex items-center justify-between text-xs text-ink-2">
-              <span>
-                {formatDate(p.date, lang)} · {fill(t.blog.minutes, { n: lang === "bn" ? bnDigits(p.minutes) : p.minutes })}
-              </span>
-              <ArrowIcon className="size-4 text-brand transition group-hover:translate-x-1" />
-            </p>
+        {guides.map((p) => {
+          const c = p[lang];
+          return (
+            <Link key={p.slug} href={href(lang, `/blog/${p.slug}`)} className="card group flex flex-col overflow-hidden transition hover:-translate-y-0.5 hover:shadow-lg">
+              {/* Decorative here: the title below already says what the post is about. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={c.cover.src} alt="" {...IMAGE_SIZE} loading="lazy" className="aspect-video w-full object-cover" />
+              <div className="flex flex-1 flex-col p-5">
+              <h2 className="font-semibold leading-snug">{c.title}</h2>
+              <p className="mt-2 flex-1 text-sm text-ink-2">{c.excerpt}</p>
+              <p className="mt-4 flex items-center justify-between text-xs text-ink-2">
+                <span>
+                  {formatDate(p.date, lang)} · {fill(t.blog.minutes, { n: num(readingMinutes(c), lang) })}
+                </span>
+                <ArrowIcon className="size-4 text-brand transition group-hover:translate-x-1" />
+              </p>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+      <PostLinks lang={lang} title={t.blog.hospitals} body={t.blog.hospitalsBody} list={[...dayListPosts, ...hospitalListPosts]} />
+      <PostLinks lang={lang} title={t.blog.lists} body={t.blog.listsBody} list={doctorListPosts} />
+      {priceListPosts.length > 0 && <PostLinks lang={lang} title={t.blog.prices} body={t.blog.pricesBody} list={priceListPosts} />}
+    </>
+  );
+}
+
+/** A compact section of Post links, for the generated lists. */
+function PostLinks({ lang, title, body, list }: { lang: Lang; title: string; body: string; list: Post[] }) {
+  return (
+    <section className="container-x mt-14">
+      <h2 className="text-xl font-bold">{title}</h2>
+      <p className="mt-1 text-ink-2">{body}</p>
+      <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {list.map((p) => (
+          <Link key={p.slug} href={href(lang, `/blog/${p.slug}`)} className="card group flex items-center gap-3 p-4 transition hover:-translate-y-0.5 hover:shadow-lg">
+            <IconTile name={p.icon} tone={p.tone} />
+            <span className="flex-1 text-sm font-semibold leading-snug">{p[lang].title}</span>
+            <ArrowIcon className="size-4 shrink-0 text-brand transition group-hover:translate-x-1" />
           </Link>
         ))}
       </div>
-    </>
+    </section>
   );
+}
+
+/** Doctor cards for a Post's `doctors` block. For a Hospital or a day, the card shows that chamber and its own days or hours. */
+function DoctorBlock({ query, lang }: { query: DoctorQuery; lang: Lang }) {
+  const short = (d: string) => (lang === "bn" ? d.replace(/বার$/, "") : d.slice(0, 3));
+  return (
+    <div className="not-prose my-6 grid gap-5 sm:grid-cols-2">
+      {resolveQuery(query).map(({ doctor, chamber }) => {
+        const base = cardData(doctor, lang);
+        const card = !chamber
+          ? base
+          : {
+              ...base,
+              chamber: placeName(chamber.name, lang),
+              days:
+                "day" in query
+                  ? `${dayNames[lang][query.day]}: ${formatHours(chamber.schedule.find((s) => s.day === query.day)?.time ?? null, lang)}`
+                  : chamber.schedule.filter((s) => s.time).map((s) => short(dayNames[lang][s.day])).join(", "),
+            };
+        return <DoctorCardView key={doctor.slug} d={card} lang={lang} />;
+      })}
+    </div>
+  );
+}
+
+const num = (n: number, lang: Lang) => (lang === "bn" ? bnDigits(n) : String(n));
+
+/** Article + FAQPage + BreadcrumbList, so search engines and AI answers can quote the Post and its FAQ. */
+function postJsonLd(post: Post, lang: Lang) {
+  const t = dictionaries[lang];
+  const c = post[lang];
+  const url = `${site.url}${href(lang, `/blog/${post.slug}`)}`;
+  const org = { "@type": "Organization", name: t.siteName, url: `${site.url}${href(lang, "/")}` };
+  const reviewer = post.reviewer ? doctorBySlug.get(post.reviewer) : undefined;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        headline: c.title,
+        description: c.excerpt,
+        inLanguage: lang === "bn" ? "bn-BD" : "en",
+        datePublished: post.date,
+        dateModified: post.updated ?? post.date,
+        author: org,
+        publisher: org,
+        mainEntityOfPage: url,
+        image: `${site.url}${shareImage(post)}`,
+        ...(reviewer ? { reviewedBy: { "@type": "Physician", name: reviewer.name, url: `${site.url}${href(lang, `/doctors/${reviewer.slug}`)}` } } : {}),
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: c.faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: t.nav.blog, item: `${site.url}${href(lang, "/blog")}` },
+          { "@type": "ListItem", position: 2, name: c.title, item: url },
+        ],
+      },
+    ],
+  };
 }
 
 export function BlogPostView({ post, lang }: { post: Post; lang: Lang }) {
   const t = dictionaries[lang];
   const c = post[lang];
+  const reviewer = post.reviewer ? doctorBySlug.get(post.reviewer) : undefined;
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(postJsonLd(post, lang)).replace(/</g, "\\u003c") }} />
       <PageHeader lang={lang} icon={post.icon} tone={post.tone} title={c.title} body={c.excerpt} crumbs={[{ label: t.nav.blog, to: href(lang, "/blog") }, { label: c.title }]} />
       <div className="container-x mt-8 grid gap-8 lg:grid-cols-[1fr_22rem]">
         <article className="prose-site max-w-2xl">
           <p className="!mt-0 text-xs">
-            {formatDate(post.date, lang)} · {fill(t.blog.minutes, { n: lang === "bn" ? bnDigits(post.minutes) : post.minutes })}
+            {fill(t.blog.by, { name: t.blog.team })} · <time dateTime={post.date}>{formatDate(post.date, lang)}</time>
+            {post.updated && (
+              <>
+                {" "}· <time dateTime={post.updated}>{fill(t.blog.updated, { date: formatDate(post.updated, lang) })}</time>
+              </>
+            )}{" "}
+            · {fill(t.blog.minutes, { n: num(readingMinutes(c), lang) })}
           </p>
+          {reviewer && (
+            <p className="text-xs">
+              <Link href={href(lang, `/doctors/${reviewer.slug}`)}>{fill(t.blog.reviewed, { name: doctorName(reviewer, lang) })}</Link>
+            </p>
+          )}
+          <aside className="rounded-2xl border border-line bg-brand-soft/60 p-5">
+            <p className="!mt-0 text-xs font-semibold uppercase tracking-wider text-brand-strong">{t.blog.inShort}</p>
+            <p className="!mt-2">{c.answer}</p>
+          </aside>
+          {/* Post illustrations are small SVG files, so a plain <img> is enough. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={c.cover.src} alt={c.cover.alt} {...IMAGE_SIZE} fetchPriority="high" className="mt-6 h-auto w-full rounded-2xl" />
           {c.body.map((b, i) => (
             <section key={i}>
               {b.h && <h2>{b.h}</h2>}
               {b.p && <p>{b.p}</p>}
+              {b.doctors && <DoctorBlock query={b.doctors} lang={lang} />}
+              {b.table && (
+                <div className="not-prose my-6 overflow-x-auto rounded-2xl border border-line">
+                  <table className="w-full text-left text-sm">
+                    <thead className="bg-surface-2">
+                      <tr>{b.table.head.map((h) => <th key={h} className="px-4 py-3 font-semibold">{h}</th>)}</tr>
+                    </thead>
+                    <tbody>
+                      {b.table.rows.map((r) => (
+                        <tr key={r.join("|")} className="border-t border-line">{r.map((c, i) => <td key={i} className="px-4 py-3 text-ink-2">{c}</td>)}</tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
               {b.ul && (
                 <ul>
                   {b.ul.map((li) => (
@@ -178,8 +310,24 @@ export function BlogPostView({ post, lang }: { post: Post; lang: Lang }) {
                   ))}
                 </ul>
               )}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              {b.img && <img src={b.img.src} alt={b.img.alt} {...IMAGE_SIZE} loading="lazy" className="my-6 h-auto w-full rounded-2xl" />}
             </section>
           ))}
+          <FaqsSection
+            className="mt-10"
+            title={t.blog.faq}
+            description={t.blog.faqBody}
+            items={c.faq}
+            footer={
+              <>
+                {t.blog.faqMore}{" "}
+                <a href={`tel:${site.phoneTel}`} className="font-semibold text-brand-strong hover:underline">
+                  {t.blog.faqCall}
+                </a>
+              </>
+            }
+          />
           <Link href={href(lang, "/blog")} className="mt-8 inline-flex items-center gap-1 font-semibold text-brand-strong">
             ← {t.blog.back}
           </Link>

@@ -1,24 +1,20 @@
 import Link from "next/link";
 import { specialties, type Specialty } from "@/data/specialties";
 import { dictionaries, fill } from "@/lib/dictionary";
-import { designations, doctors, doctorsInSpecialty, type Designation } from "@/lib/doctors";
+import { bySeniority, designations, doctors, doctorsInSpecialty, type Designation } from "@/lib/doctors";
 import { bnDigits } from "@/lib/bangla";
 import { href, type Lang } from "@/lib/site";
 import { DoctorCard, DoctorGrid } from "@/components/DoctorCard";
 import { PageHeader } from "@/components/PageHeader";
+import { doctorListSlug } from "@/content/doctor-lists";
+import { ArrowIcon } from "@/components/icons";
 import { AppIcon, IconTile, toneText } from "@/components/AppIcon";
 
 const count = (n: number, lang: Lang) => fill(dictionaries[lang].doctorsCount, { n: lang === "bn" ? bnDigits(n) : n });
 
-// Available Doctors first, then seniority, then name.
-const seniority: Designation[] = ["professor", "associate-professor", "assistant-professor", "consultant", "specialist", "medical-officer", "general-physician"];
-function sortDoctors<T extends { available: boolean; designation: Designation; name: string }>(list: T[]) {
-  return [...list].sort((a, b) => Number(b.available) - Number(a.available) || seniority.indexOf(a.designation) - seniority.indexOf(b.designation) || a.name.localeCompare(b.name));
-}
-
 export function SpecialtyView({ specialty: s, lang }: { specialty: Specialty; lang: Lang }) {
   const t = dictionaries[lang];
-  const list = sortDoctors(doctorsInSpecialty(s.slug));
+  const list = bySeniority(doctorsInSpecialty(s.slug));
   const title = lang === "bn" ? `${s.bnPerson} — খুলনা` : `${s.enPerson}s in Khulna`;
   return (
     <>
@@ -31,6 +27,13 @@ export function SpecialtyView({ specialty: s, lang }: { specialty: Specialty; la
         crumbs={[{ label: t.nav.specialties, to: href(lang, "/specialties") }, { label: lang === "bn" ? s.bn : s.en }]}
       />
       <div className="container-x mt-8">
+        {/* The Specialty's "best doctors" Post holds the long-form list; link to it so the two pages support rather than compete. */}
+        <Link href={href(lang, `/blog/${doctorListSlug(s)}`)} className="card group mb-6 flex items-center gap-3 p-4 hover:border-brand">
+          <IconTile name={s.icon} tone={s.tone} />
+          <span className="flex-1 text-sm font-semibold">{lang === "bn" ? `খুলনার সেরা ${s.bnPerson} — ফি, চেম্বার ও তুলনা` : `Best ${s.enPerson}s in Khulna — fees, chambers and how to choose`}</span>
+          <span className="hidden text-sm font-semibold text-brand-strong sm:inline">{t.blog.readList}</span>
+          <ArrowIcon className="size-4 text-brand transition group-hover:translate-x-1" />
+        </Link>
         <DoctorGrid>
           {list.map((d) => (
             <DoctorCard key={d.slug} doctor={d} lang={lang} specialtyLabel={lang === "bn" ? s.bnPerson : s.enPerson} />
@@ -98,7 +101,7 @@ export function SpecialtiesView({ lang }: { lang: Lang }) {
 export function DesignationView({ slug, lang }: { slug: Designation; lang: Lang }) {
   const t = dictionaries[lang];
   const d = designations.find((x) => x.slug === slug)!;
-  const list = sortDoctors(doctors.filter((x) => x.designation === slug));
+  const list = bySeniority(doctors.filter((x) => x.designation === slug));
   return (
     <>
       <PageHeader lang={lang} title={lang === "bn" ? d.bn : `${d.en}s`} body={count(list.length, lang)} crumbs={[{ label: t.nav.designation }, { label: lang === "bn" ? d.bn : d.en }]} />

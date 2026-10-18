@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { dictionaries } from "@/lib/dictionary";
 import { href, type Lang } from "@/lib/site";
 import { ChevronIcon, CloseIcon, MenuIcon } from "@/components/icons";
@@ -16,7 +17,14 @@ export function MobileMenu({ lang, specialties, designations, links }: { lang: L
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    if (!open) return;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
   }, [open]);
 
   return (
@@ -24,7 +32,9 @@ export function MobileMenu({ lang, specialties, designations, links }: { lang: L
       <button onClick={() => setOpen(true)} className="grid size-10 place-items-center rounded-full hover:bg-surface-2 lg:hidden" aria-label={t.menu} aria-expanded={open}>
         <MenuIcon className="size-6" />
       </button>
-      {open && (
+      {/* Portalled to <body>: the header's backdrop-filter would otherwise become the
+          containing block for this fixed overlay and clip it to the header's height. */}
+      {open && createPortal(
         <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true">
           <button className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} aria-label={t.close} />
           <div className="absolute inset-y-0 right-0 flex w-[88%] max-w-sm flex-col bg-surface shadow-2xl">
@@ -88,7 +98,8 @@ export function MobileMenu({ lang, specialties, designations, links }: { lang: L
               </nav>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </>
   );

@@ -2,7 +2,7 @@
 // so both language trees stay identical and fully static.
 import { notFound } from "next/navigation";
 import { specialties, specialtyBySlug } from "@/data/specialties";
-import { postBySlug, posts } from "@/content/blog";
+import { postBySlug, posts, shareImage } from "@/content/blog";
 import { aboutPage, contactPage, servicePages } from "@/content/pages";
 import { dictionaries, fill } from "@/lib/dictionary";
 import { designations, diseaseName, doctorBySlug, doctorName, doctors, doctorsInSpecialty, money, placeName, specialtyOf, type Designation } from "@/lib/doctors";
@@ -65,7 +65,7 @@ export const specialtyPage = (lang: Lang) => ({
     const n = num(doctorsInSpecialty(s.slug).length, lang);
     return lang === "bn"
       ? pageMeta(lang, `/specialties/${s.slug}`, `খুলনার ${s.bnPerson}`, `খুলনার ${n} জন ${s.bnPerson} — চেম্বার, সময়সূচি ও ফি দেখুন এবং কল করে সিরিয়াল নিন।`)
-      : pageMeta(lang, `/specialties/${s.slug}`, `Best ${s.enPerson}s in Khulna`, `${n} ${s.enPerson.toLowerCase()}s in Khulna — compare chambers, visiting hours and fees, then call to book your serial.`);
+      : pageMeta(lang, `/specialties/${s.slug}`, `${s.enPerson}s in Khulna: Chambers & Visiting Hours`, `${n} ${s.enPerson.toLowerCase()}s in Khulna — compare chambers, visiting hours and fees, then call to book your serial.`);
   },
   Page: async ({ params }: SlugProps) => {
     const s = specialtyBySlug.get((await params).slug);
@@ -120,7 +120,8 @@ export const blogPost = (lang: Lang) => ({
   generateMetadata: async ({ params }: SlugProps) => {
     const p = postBySlug.get((await params).slug);
     if (!p) return {};
-    return pageMeta(lang, `/blog/${p.slug}`, p[lang].title, p[lang].excerpt);
+    const c = p[lang];
+    return pageMeta(lang, `/blog/${p.slug}`, c.title, c.excerpt, shareImage(p), { article: { published: p.date, modified: p.updated ?? p.date } });
   },
   Page: async ({ params }: SlugProps) => {
     const p = postBySlug.get((await params).slug);

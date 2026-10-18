@@ -55,6 +55,12 @@ export const designations: { slug: Designation; en: string; bn: string }[] = [
   { slug: "general-physician", en: "General Physician", bn: "সাধারণ চিকিৎসক" },
 ];
 
+// Available Doctors first, then seniority, then name.
+const seniority: Designation[] = ["professor", "associate-professor", "assistant-professor", "consultant", "specialist", "medical-officer", "general-physician"];
+export function bySeniority<T extends { available: boolean; designation: Designation; name: string }>(list: T[]) {
+  return [...list].sort((a, b) => Number(b.available) - Number(a.available) || seniority.indexOf(a.designation) - seniority.indexOf(b.designation) || a.name.localeCompare(b.name));
+}
+
 export function doctorsInSpecialty(slug: string) {
   return doctors.filter((d) => d.specialty === slug || d.alsoIn.includes(slug));
 }

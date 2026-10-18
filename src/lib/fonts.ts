@@ -1,4 +1,6 @@
-import { Hind_Siliguri, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 
 export const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-export const hind = Hind_Siliguri({ subsets: ["bengali", "latin"], weight: ["400", "500", "600", "700"], variable: "--font-hind", display: "swap" });
+// Kalpurush ships one regular weight; declaring only 400 lets the browser embolden headings.
+export const kalpurush = localFont({ src: "../fonts/Kalpurush.woff2", weight: "400", variable: "--font-kalpurush", display: "swap" });
