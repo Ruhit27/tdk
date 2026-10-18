@@ -2,8 +2,13 @@ import type { Metadata } from "next";
 import { href, site, type Lang } from "@/lib/site";
 import { dictionaries } from "@/lib/dictionary";
 
+type Extra = {
+  /** Marks the page as an article with these ISO dates. */
+  article?: { published: string; modified: string };
+};
+
 /** Metadata with canonical + hreflang alternates. `path` is the English path, e.g. `/doctors`. */
-export function pageMeta(lang: Lang, path: string, title: string | null, description: string, image?: string | null): Metadata {
+export function pageMeta(lang: Lang, path: string, title: string | null, description: string, image?: string | null, extra: Extra = {}): Metadata {
   const name = dictionaries[lang].siteName;
   const fullTitle = title ? `${title} | ${name}` : `${name} — ${dictionaries[lang].tagline}`;
   return {
@@ -20,7 +25,7 @@ export function pageMeta(lang: Lang, path: string, title: string | null, descrip
       url: href(lang, path),
       siteName: name,
       locale: lang === "bn" ? "bn_BD" : "en_US",
-      type: "website",
+      ...(extra.article ? { type: "article", publishedTime: extra.article.published, modifiedTime: extra.article.modified } : { type: "website" }),
       ...(image ? { images: [{ url: image }] } : {}),
     },
   };

@@ -1,4 +1,4 @@
-import { hind, inter } from "@/lib/fonts";
+import { inter, kalpurush } from "@/lib/fonts";
 import type { Lang } from "@/lib/site";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -10,7 +10,7 @@ const themeScript = `try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&
 
 export function RootShell({ lang, children }: { lang: Lang; children: React.ReactNode }) {
   return (
-    <html lang={lang} className={`${inter.variable} ${hind.variable} antialiased`} suppressHydrationWarning>
+    <html lang={lang} className={`${inter.variable} ${kalpurush.variable} antialiased`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>

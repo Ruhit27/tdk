@@ -48,8 +48,28 @@
   --color-accent: var(--accent);
   --color-danger: var(--danger);
   --color-wa: var(--wa);
-  --font-sans: var(--font-inter), var(--font-hind), ui-sans-serif, system-ui, sans-serif;
-  --font-bangla: var(--font-hind), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), var(--font-kalpurush), ui-sans-serif, system-ui, sans-serif;
+  --font-bangla: var(--font-kalpurush), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
 }
 
 html {
@@ -156,25 +176,26 @@ html[lang="bn"] body {
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 25%, transparent);
   }
 
-  .prose-site h2 {
+  /* `.not-prose` opts embedded components (e.g. doctor cards in a Post) out of article typography. */
+  .prose-site h2:not(.not-prose *) {
     font-size: 1.35rem;
     font-weight: 700;
     margin: 1.75rem 0 0.6rem;
   }
-  .prose-site p,
-  .prose-site li {
+  .prose-site p:not(.not-prose *),
+  .prose-site li:not(.not-prose *) {
     color: var(--ink-2);
     line-height: 1.8;
   }
-  .prose-site p {
+  .prose-site p:not(.not-prose *) {
     margin: 0.75rem 0;
   }
-  .prose-site ul {
+  .prose-site ul:not(.not-prose *) {
     list-style: disc;
     padding-left: 1.25rem;
     margin: 0.75rem 0;
   }
-  .prose-site strong {
+  .prose-site strong:not(.not-prose *) {
     color: var(--ink);
   }
 

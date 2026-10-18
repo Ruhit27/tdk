@@ -15,8 +15,8 @@ const nextConfig: NextConfig = {
     },
   },
   async headers() {
-    // Doctor photos and logos never change in place; cache them hard.
-    return [{ source: "/:dir(photos|logos)/:file*", headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }] }];
+    // Doctor photos, logos and blog illustrations never change in place; cache them hard.
+    return [{ source: "/:dir(photos|logos|blog)/:file*", headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }] }];
   },
   async redirects() {
     // Old-style /en/... links resolve to the English pages at the root.

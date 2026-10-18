@@ -128,7 +128,7 @@ const en = {
   langSwitch: "বাংলা",
   theme: "Toggle dark mode",
   notFound: { title: "Page not found", body: "The page you're looking for doesn't exist or has moved.", home: "Go to homepage" },
-  blog: { title: "Health blog", body: "Practical guides for patients and families in Khulna.", read: "Read article", minutes: "{n} min read", back: "All articles" },
+  blog: { title: "Health blog", body: "Practical guides for patients and families in Khulna.", read: "Read article", minutes: "{n} min read", back: "All articles", inShort: "In short", guides: "Health guides", hospitals: "Doctor lists by hospital and day", hospitalsBody: "Which doctors sit at each hospital, with serial numbers — and who is open on Friday.", prices: "Test prices in Khulna", pricesBody: "What common tests cost at diagnostic centres in Khulna.", lists: "Best doctors in Khulna by specialty", listsBody: "Every specialist in each field, with chambers, fees and visiting days.", readList: "See the full list", faq: "Frequently asked questions", faqBody: "Short answers to the questions patients ask most about this topic.", faqMore: "Still have a question?", faqCall: "Call or WhatsApp our Booking Line", team: "Top Doctors Khulna Team", by: "By {name}", reviewed: "Medically reviewed by {name}", updated: "Updated {date}" },
 };
 
 type Dict = typeof en;
@@ -261,7 +261,7 @@ const bn: Dict = {
   langSwitch: "English",
   theme: "ডার্ক মোড পরিবর্তন",
   notFound: { title: "পেজটি পাওয়া যায়নি", body: "আপনি যে পেজটি খুঁজছেন সেটি নেই বা সরানো হয়েছে।", home: "হোমপেজে যান" },
-  blog: { title: "স্বাস্থ্য ব্লগ", body: "খুলনার রোগী ও পরিবারের জন্য কাজের স্বাস্থ্য পরামর্শ।", read: "পড়ুন", minutes: "{n} মিনিটে পড়ুন", back: "সব লেখা" },
+  blog: { title: "স্বাস্থ্য ব্লগ", body: "খুলনার রোগী ও পরিবারের জন্য কাজের স্বাস্থ্য পরামর্শ।", read: "পড়ুন", minutes: "{n} মিনিটে পড়ুন", back: "সব লেখা", inShort: "সংক্ষেপে", guides: "স্বাস্থ্য গাইড", hospitals: "হাসপাতাল ও দিন অনুযায়ী ডাক্তার তালিকা", hospitalsBody: "কোন হাসপাতালে কোন ডাক্তার বসেন, সিরিয়াল নম্বরসহ — আর শুক্রবার কারা খোলা।", prices: "খুলনায় টেস্টের খরচ", pricesBody: "খুলনার ডায়াগনস্টিক সেন্টারে সাধারণ টেস্টের খরচ।", lists: "বিভাগ অনুযায়ী খুলনার সেরা ডাক্তার", listsBody: "প্রতিটি বিভাগের সব বিশেষজ্ঞ — চেম্বার, ফি ও বসার দিনসহ।", readList: "পুরো তালিকা দেখুন", faq: "সচরাচর জিজ্ঞাসা", faqBody: "এই বিষয়ে রোগীরা সবচেয়ে বেশি যে প্রশ্নগুলো করেন, তার সংক্ষিপ্ত উত্তর।", faqMore: "আরও প্রশ্ন আছে?", faqCall: "আমাদের বুকিং লাইনে কল বা হোয়াটসঅ্যাপ করুন", team: "টপ ডক্টরস খুলনা টিম", by: "লিখেছে {name}", reviewed: "চিকিৎসা-তথ্য যাচাই করেছেন {name}", updated: "হালনাগাদ {date}" },
 };
 
 export const dictionaries: Record<Lang, Dict> = { en, bn };
