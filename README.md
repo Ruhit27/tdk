@@ -1,36 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Top Doctors Khulna
 
-## Getting Started
-
-First, run the development server:
+Bilingual (English / বাংলা) directory of specialist doctors in Khulna. Next.js 16, fully static, deploys to Vercel with no configuration.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # http://localhost:3000  (Bangla at /bn)
+npm run build   # pre-renders every page
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Where things live
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| What | File |
+| --- | --- |
+| Booking Line phone / WhatsApp, site URL | `src/lib/site.ts` |
+| Doctors (fees, chambers, schedules, featured flag, photo) | `src/data/doctors.json` |
+| Specialties (names, icons, Bangla) | `src/data/specialties.ts` |
+| Hospitals, diagnostics, blood banks, pharmacies, emergency numbers | `src/data/facilities.ts` |
+| Bangla translations of names / diseases / places | `src/data/bn/*.json` |
+| UI text in both languages | `src/lib/dictionary.ts` |
+| Service pages, About, Contact text | `src/content/pages.ts` |
+| Blog posts | `src/content/blog.ts` |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+To add a doctor, append an entry to `doctors.json` and drop a square photo at `public/photos/<slug>.webp` (or set `"photo": null` for an initials avatar). Any new name word or disease needs a Bangla entry in `src/data/bn/`, otherwise it shows in English on `/bn` pages.
