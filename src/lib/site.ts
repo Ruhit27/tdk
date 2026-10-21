@@ -11,12 +11,15 @@ export const site = {
 
 export type Lang = "en" | "bn";
 
-export const langs: Lang[] = ["en", "bn"];
+export const langs: Lang[] = ["bn", "en"];
 
-/** Prefix an English path for the given language: `/doctors` → `/bn/doctors`. */
+/** Bangla is the default language and lives at the root; English is under `/en`. */
+export const defaultLang: Lang = "bn";
+
+/** Prefix a site path for the given language: `/doctors` → `/en/doctors`. */
 export function href(lang: Lang, path: string) {
-  if (lang === "en") return path;
-  return path === "/" ? "/bn" : `/bn${path}`;
+  if (lang === defaultLang) return path;
+  return path === "/" ? "/en" : `/en${path}`;
 }
 
 export function whatsappLink(message: string) {

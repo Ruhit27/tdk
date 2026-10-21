@@ -2,7 +2,7 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Mangrove green and river blue, from the logo; src/lib/brand.ts mirrors these for icons and share images. */
+/* Pulse green and Rupsha blue, from the logo; src/lib/brand.ts mirrors these for icons and share images. */
 :root {
   --bg: #f5f9f8;
   --surface: #ffffff;

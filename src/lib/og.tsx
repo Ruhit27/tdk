@@ -36,14 +36,14 @@ async function card({ eyebrow, title, subtitle, photo }: { eyebrow: string; titl
           <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
             {/* eslint-disable-next-line @next/next/no-img-element -- ImageResponse markup, not a page */}
             <img src={svgDataUri(lockupSvg(c))} width={330} height={68} alt="" />
-            <div style={{ marginTop: 56, fontSize: 30, fontWeight: 600, color: c.leaf }}>{eyebrow}</div>
+            <div style={{ marginTop: 56, fontSize: 30, fontWeight: 600, color: c.brand }}>{eyebrow}</div>
             <div style={{ marginTop: 12, fontSize: title.length > 26 ? 58 : 68, fontWeight: 800, lineHeight: 1.08, letterSpacing: -1.5 }}>{title}</div>
             <div style={{ marginTop: 20, fontSize: 28, fontWeight: 600, color: "#4a615d", lineHeight: 1.35 }}>{subtitle}</div>
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element -- ImageResponse markup, not a page */}
-          <img src={art} width={320} height={320} alt="" style={{ borderRadius: photo ? 160 : 72, border: photo ? `10px solid ${c.leaf}` : "none" }} />
+          <img src={art} width={320} height={320} alt="" style={{ borderRadius: photo ? 160 : 72, border: photo ? `10px solid ${c.brand}` : "none" }} />
         </div>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 92, padding: "0 72px", background: c.leaf, color: "#fff", fontSize: 30, fontWeight: 600 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 92, padding: "0 72px", background: c.brand, color: "#fff", fontSize: 30, fontWeight: 600 }}>
           <span>Book a serial: {site.phoneDisplay}</span>
           <span style={{ opacity: 0.85 }}>{new URL(site.url).host}</span>
         </div>

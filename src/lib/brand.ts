@@ -1,26 +1,19 @@
-// The Top Doctors Khulna logo: a Sundarbans mangrove leaf with a plus cut out of it, standing on
-// stilt roots over the river. One source for the header logo, app icons and share images;
+// The Top Doctors Khulna logo, "Rupsha Pulse": a heartbeat line that runs out into a wave of the
+// Rupsha river, on a soft disc with a faint ripple beneath. One source for the header logo, app icons and share images;
 // `npm run brand` rasterises the static files from it, so edit here and re-run that.
 //
 // The mark sits on a 64×64 grid; the lockup (mark + wordmark) on a 660×136 grid. The wordmark is
 // Plus Jakarta Sans outlined to paths, so it needs no font. No imports: `scripts/brand.ts` runs it in plain Node.
 
-/** Rounded-end plus centred on (cx, cy); cut out of a shape with `fill-rule="evenodd"`. */
-function plus(cx: number, cy: number, arm: number, r: number) {
-  const [l, rt, t, b] = [cx - r, cx + r, cy - r, cy + r];
-  return `M${l} ${cy - arm}A${r} ${r} 0 0 1 ${rt} ${cy - arm}V${t}H${cx + arm}A${r} ${r} 0 0 1 ${cx + arm} ${b}H${rt}V${cy + arm}A${r} ${r} 0 0 1 ${l} ${cy + arm}V${b}H${cx - arm}A${r} ${r} 0 0 1 ${cx - arm} ${t}H${l}Z`;
-}
-
 export const mark = {
-  leaf: "M32 1C50 10 56 29 32 44C8 29 14 10 32 1Z" + plus(32, 21, 8.5, 2.8),
-  roots: "M32 43V58M32 47C25 47 21 51 20 58M32 47C39 47 43 51 44 58M32 45C21 44 13 50 11 58M32 45C43 44 51 50 53 58",
-  water: "M6 61C12 59 16 59 22 61S32 63 38 61S48 59 54 61",
-  rootWidth: 3,
-  waterWidth: 2.4,
+  disc: { cx: 32, cy: 32, r: 29 },
+  ripple: "M14 47C18 44 22 44 26 47S34 50 38 47S46 44 50 47",
+  pulse: "M5 34H18L22.5 26L28 44L33.5 14L38 34",
+  river: "M38 34C41.5 29.5 45 29.5 48.5 34S55.5 38.5 59 34",
+  lineWidth: 4,
+  rippleWidth: 2.4,
+  rippleOpacity: 0.45,
 };
-
-/** Leaf only, filling the tile: for favicons, where roots would blur into a smudge. */
-export const smallLeaf = "M32 5C50 15 54 34 32 59C10 34 14 15 32 5Z" + plus(32, 28, 10.5, 3.6);
 
 export const wordmark = {
   top: "M173.2 68V15.5H156.9V3.9H202.5V15.5H186.5V68ZM224.2 69Q217.2 69 211.5 65.8Q205.8 62.7 202.4 57.1Q199 51.6 199 44.5Q199 37.4 202.4 31.9Q205.8 26.4 211.5 23.2Q217.2 20 224.2 20Q231.2 20 236.8 23.2Q242.5 26.4 245.9 31.9Q249.3 37.4 249.3 44.5Q249.3 51.6 245.9 57.1Q242.5 62.7 236.8 65.8Q231.2 69 224.2 69ZM224.2 57.4Q227.7 57.4 230.3 55.8Q233 54.2 234.5 51.2Q236 48.3 236 44.5Q236 40.7 234.5 37.9Q233 35 230.3 33.3Q227.7 31.6 224.2 31.6Q220.7 31.6 218 33.3Q215.3 35 213.8 37.9Q212.3 40.7 212.3 44.5Q212.3 48.3 213.8 51.2Q215.3 54.2 218 55.8Q220.7 57.4 224.2 57.4ZM255.6 85.2V21H267.6V30L266.5 27.4Q268.8 23.9 272.8 21.9Q276.8 20 282 20Q288.7 20 294.1 23.3Q299.5 26.5 302.7 32.1Q305.9 37.6 305.9 44.5Q305.9 51.3 302.7 56.9Q299.6 62.5 294.2 65.8Q288.8 69 281.9 69Q277.1 69 273 67.3Q268.9 65.5 266.4 62.1L268.5 59.4V85.2ZM280.3 57.4Q283.9 57.4 286.7 55.8Q289.5 54.2 291 51.2Q292.5 48.3 292.5 44.5Q292.5 40.7 291 37.9Q289.5 35 286.7 33.3Q283.9 31.6 280.3 31.6Q276.9 31.6 274.2 33.3Q271.5 34.9 270 37.8Q268.5 40.7 268.5 44.5Q268.5 48.3 270 51.2Q271.5 54.2 274.2 55.8Q276.9 57.4 280.3 57.4ZM327.3 68V3.9H348.2Q358.6 3.9 366.2 8.1Q373.9 12.2 378.1 19.4Q382.3 26.6 382.3 35.9Q382.3 45.2 378.1 52.5Q373.9 59.7 366.2 63.9Q358.6 68 348.2 68ZM340.6 56.4H348.5Q354.8 56.4 359.4 53.9Q363.9 51.3 366.4 46.7Q369 42.1 369 35.9Q369 29.6 366.4 25.1Q363.9 20.5 359.4 18Q354.8 15.5 348.5 15.5H340.6ZM411.9 69Q404.9 69 399.2 65.8Q393.5 62.7 390.1 57.1Q386.7 51.6 386.7 44.5Q386.7 37.4 390.1 31.9Q393.5 26.4 399.2 23.2Q404.9 20 411.9 20Q418.9 20 424.5 23.2Q430.2 26.4 433.6 31.9Q437 37.4 437 44.5Q437 51.6 433.6 57.1Q430.2 62.7 424.5 65.8Q418.9 69 411.9 69ZM411.9 57.4Q415.4 57.4 418 55.8Q420.7 54.2 422.2 51.2Q423.7 48.3 423.7 44.5Q423.7 40.7 422.2 37.9Q420.7 35 418 33.3Q415.4 31.6 411.9 31.6Q408.4 31.6 405.7 33.3Q403 35 401.5 37.9Q400 40.7 400 44.5Q400 48.3 401.5 51.2Q403 54.2 405.7 55.8Q408.4 57.4 411.9 57.4ZM466.3 69Q459.3 69 453.6 65.8Q448 62.6 444.7 57Q441.4 51.4 441.4 44.4Q441.4 37.5 444.6 31.9Q447.9 26.4 453.6 23.2Q459.3 20 466.3 20Q471.6 20 476 21.8Q480.5 23.6 483.7 26.8Q486.9 30.1 488.2 34.5L477.1 39.3Q475.9 35.8 473 33.7Q470.1 31.6 466.3 31.6Q463 31.6 460.3 33.3Q457.7 34.9 456.2 37.8Q454.7 40.7 454.7 44.5Q454.7 48.3 456.2 51.2Q457.7 54.2 460.3 55.8Q463 57.4 466.3 57.4Q470.2 57.4 473 55.4Q475.9 53.3 477.1 49.8L488.2 54.7Q487 58.8 483.8 62.1Q480.6 65.3 476.1 67.2Q471.6 69 466.3 69ZM517.1 68.5Q508.6 68.5 503.9 63.9Q499.2 59.3 499.2 51.1V32.2H491.3V21H491.8Q495.4 21 497.3 19.2Q499.2 17.4 499.2 13.8V10.4H512.1V21H523.1V32.2H512.1V50.2Q512.1 52.6 513 54.2Q513.9 55.8 515.7 56.6Q517.5 57.3 520.1 57.3Q520.7 57.3 521.5 57.2Q522.3 57.2 523.1 57.1V68Q521.9 68.2 520.2 68.3Q518.6 68.5 517.1 68.5ZM552.7 69Q545.8 69 540 65.8Q534.3 62.7 530.9 57.1Q527.5 51.6 527.5 44.5Q527.5 37.4 530.9 31.9Q534.3 26.4 540 23.2Q545.8 20 552.7 20Q559.7 20 565.4 23.2Q571 26.4 574.4 31.9Q577.8 37.4 577.8 44.5Q577.8 51.6 574.4 57.1Q571 62.7 565.4 65.8Q559.7 69 552.7 69ZM552.7 57.4Q556.2 57.4 558.9 55.8Q561.5 54.2 563 51.2Q564.5 48.3 564.5 44.5Q564.5 40.7 563 37.9Q561.5 35 558.9 33.3Q556.2 31.6 552.7 31.6Q549.2 31.6 546.5 33.3Q543.9 35 542.4 37.9Q540.9 40.7 540.9 44.5Q540.9 48.3 542.4 51.2Q543.9 54.2 546.5 55.8Q549.2 57.4 552.7 57.4ZM584.1 68V21H596.1V32.3L595.3 30.7Q596.8 24.7 600.4 22.6Q604 20.5 608.9 20.5H611.6V31.7H607.6Q602.9 31.7 599.9 34.6Q597 37.5 597 42.7V68ZM634.4 69Q626.7 69 620.9 65.4Q615.2 61.7 613.2 55.5L622.6 51.1Q624.4 54.8 627.5 57Q630.6 59.1 634.4 59.1Q637.2 59.1 638.6 58Q640.1 56.9 640.1 54.9Q640.1 53.9 639.6 53.2Q639 52.4 638 51.8Q637 51.2 635.4 50.8L627.4 48.6Q621.7 46.9 618.6 43.3Q615.5 39.6 615.5 34.6Q615.5 30.2 617.7 27Q620 23.7 624 21.9Q628 20 633.3 20Q640.2 20 645.4 23.2Q650.6 26.5 652.7 32.3L643.2 36.8Q642.1 33.9 639.4 32.1Q636.7 30.3 633.3 30.3Q630.8 30.3 629.4 31.4Q628 32.4 628 34.2Q628 35.1 628.5 35.9Q629 36.7 630.1 37.3Q631.3 37.9 633 38.4L640.5 40.7Q646.4 42.4 649.5 45.9Q652.5 49.3 652.5 54.4Q652.5 58.8 650.3 62.1Q648 65.3 644 67.2Q639.9 69 634.4 69Z",
@@ -31,18 +24,23 @@ export const lockupViewBox = "0 0 660 136";
 /** The mark inside the lockup: 64 → 134.4 units. */
 export const lockupMarkScale = 2.1;
 
-export type BrandColors = { leaf: string; roots: string; water: string; ink: string; sub: string };
+export type BrandColors = { brand: string; disc: string; river: string; ink: string; sub: string };
 
-// Mirrors --brand / --brand-strong / --accent / --ink in globals.css, for places without CSS (icons, share images).
+// Mirrors --brand / --brand-soft / --accent / --ink in globals.css, for places without CSS (icons, share images).
 export const brandColors: Record<"light" | "dark", BrandColors> = {
-  light: { leaf: "#0f6b5c", roots: "#0a4f44", water: "#2a78c2", ink: "#0d2622", sub: "#0f6b5c" },
-  dark: { leaf: "#3fcfb0", roots: "#7fe3cc", water: "#6cb6f0", ink: "#e2f2ee", sub: "#3fcfb0" },
+  light: { brand: "#0f6b5c", disc: "#d5efe7", river: "#2a78c2", ink: "#0d2622", sub: "#2a78c2" },
+  dark: { brand: "#3fcfb0", disc: "#12463d", river: "#6cb6f0", ink: "#e2f2ee", sub: "#6cb6f0" },
 };
 
-const markBody = (c: Pick<BrandColors, "leaf" | "roots" | "water">) =>
-  `<path d="${mark.leaf}" fill="${c.leaf}" fill-rule="evenodd"/>` +
-  `<path d="${mark.roots}" fill="none" stroke="${c.roots}" stroke-width="${mark.rootWidth}" stroke-linecap="round"/>` +
-  `<path d="${mark.water}" fill="none" stroke="${c.water}" stroke-width="${mark.waterWidth}" stroke-linecap="round"/>`;
+/** Pulse and river lines only, for tiles and small sizes where the disc and ripple would blur. */
+const lines = (pulse: string, river: string, width = mark.lineWidth) =>
+  `<path d="${mark.pulse}" fill="none" stroke="${pulse}" stroke-width="${width}" stroke-linecap="round" stroke-linejoin="round"/>` +
+  `<path d="${mark.river}" fill="none" stroke="${river}" stroke-width="${width}" stroke-linecap="round"/>`;
+
+const markBody = (c: Pick<BrandColors, "brand" | "disc" | "river">) =>
+  `<circle cx="${mark.disc.cx}" cy="${mark.disc.cy}" r="${mark.disc.r}" fill="${c.disc}"/>` +
+  `<path d="${mark.ripple}" fill="none" stroke="${c.river}" stroke-width="${mark.rippleWidth}" stroke-linecap="round" opacity="${mark.rippleOpacity}"/>` +
+  lines(c.brand, c.river);
 
 const svg = (viewBox: string, body: string, size = "") => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}"${size}>${body}</svg>`;
 
@@ -55,15 +53,15 @@ export const lockupSvg = (c: BrandColors = brandColors.light) =>
   );
 
 /**
- * The mark reversed out of a brand-coloured tile. `full` keeps roots and water (180 px and up);
- * otherwise only the leaf. `rounded: false` is full-bleed, for iOS and maskable icons that crop
+ * The pulse reversed out of a brand-coloured tile. `full` is for 180 px and up; otherwise the lines
+ * are drawn heavier so they survive at favicon size. `rounded: false` is full-bleed, for iOS and maskable icons that crop
  * the corners themselves; `inset` shrinks the artwork to stay inside a maskable icon's safe zone.
  */
 export function badgeSvg({ full = true, rounded = true, inset = 1 }: { full?: boolean; rounded?: boolean; inset?: number } = {}) {
   const c = brandColors.light;
-  const tile = rounded ? `<rect width="64" height="64" rx="15" fill="${c.leaf}"/>` : `<rect width="64" height="64" fill="${c.leaf}"/>`;
-  const s = (full ? 0.8 : 1) * inset;
-  const art = full ? markBody({ leaf: "#fff", roots: "#fff", water: "#9fd3f5" }) : `<path d="${smallLeaf}" fill="#fff" fill-rule="evenodd"/>`;
+  const tile = rounded ? `<rect width="64" height="64" rx="15" fill="${c.brand}"/>` : `<rect width="64" height="64" fill="${c.brand}"/>`;
+  const s = (full ? 0.8 : 0.9) * inset;
+  const art = lines("#fff", "#7fd0ff", full ? 4.5 : 6);
   return svg("0 0 64 64", `${tile}<g transform="translate(${32 - 32 * s} ${32 - 32 * s}) scale(${s})">${art}</g>`);
 }
 

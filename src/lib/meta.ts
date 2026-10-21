@@ -21,7 +21,7 @@ export function clip(s: string, max: number) {
   return `${cut.slice(0, cut.lastIndexOf(" ") > max / 2 ? cut.lastIndexOf(" ") : cut.length).replace(/[\s,.;:—–-]+$/, "")}…`;
 }
 
-/** Metadata with canonical + hreflang alternates. `path` is the English path, e.g. `/doctors`. */
+/** Metadata with canonical + hreflang alternates. `path` is the unprefixed path, e.g. `/doctors`. */
 export function pageMeta(lang: Lang, path: string, title: string | null, desc: string, image?: string | null, extra: Extra = {}): Metadata {
   const name = dictionaries[lang].siteName;
   // The brand suffix is dropped when it would push the title past what Google shows.
@@ -33,7 +33,7 @@ export function pageMeta(lang: Lang, path: string, title: string | null, desc: s
     description,
     alternates: {
       canonical: href(lang, path),
-      languages: { en: href("en", path), bn: href("bn", path), "x-default": href("en", path) },
+      languages: { en: href("en", path), bn: href("bn", path), "x-default": href("bn", path) },
     },
     openGraph: {
       title: fullTitle,
