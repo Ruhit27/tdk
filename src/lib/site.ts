@@ -1,7 +1,8 @@
 export const site = {
   nameEn: "Top Doctors Khulna",
   nameBn: "টপ ডক্টরস খুলনা",
-  url: "https://topdoctorskhulna.com",
+  // Must be the host Vercel serves (the apex redirects to www), or canonicals point at a redirect.
+  url: "https://www.topdoctorskhulna.com",
   // The Booking Line: the single number patients call or WhatsApp for every Service.
   phoneDisplay: "+880 1701-667283",
   phoneTel: "+8801701667283",
