@@ -27,7 +27,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const dated: [string, string | undefined][] = [...paths.map((p): [string, undefined] => [p, undefined]), ...posts.map((p): [string, string] => [`/blog/${p.slug}`, p.updated ?? p.date])];
   // Each language version is its own entry, and each lists every version including itself.
   return dated.flatMap(([p, lastModified]) => {
-    const languages = { en: `${site.url}${href("en", p)}`, bn: `${site.url}${href("bn", p)}`, "x-default": `${site.url}${href("en", p)}` };
+    const languages = { en: `${site.url}${href("en", p)}`, bn: `${site.url}${href("bn", p)}`, "x-default": `${site.url}${href("bn", p)}` };
     return langs.map((lang) => ({ url: languages[lang], ...(lastModified ? { lastModified } : {}), alternates: { languages } }));
   });
 }

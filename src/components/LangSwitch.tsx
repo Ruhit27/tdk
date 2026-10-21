@@ -2,11 +2,11 @@
 
 import { usePathname } from "next/navigation";
 import { Languages } from "lucide-react";
-import type { Lang } from "@/lib/site";
+import { href, type Lang } from "@/lib/site";
 
 export function otherLangPath(lang: Lang, path: string) {
-  if (lang === "bn") return path.replace(/^\/bn(?=\/|$)/, "") || "/";
-  return path === "/" ? "/bn" : `/bn${path}`;
+  if (lang === "en") return path.replace(/^\/en(?=\/|$)/, "") || "/";
+  return href("en", path);
 }
 
 /**

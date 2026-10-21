@@ -6,12 +6,13 @@ export function Logo({ className = "h-9 w-auto sm:h-10" }: { className?: string 
   return (
     <svg viewBox={lockupViewBox} className={className} role="img" aria-label={site.nameEn}>
       <g transform={`scale(${lockupMarkScale})`}>
-        <path d={mark.leaf} fill="var(--brand)" fillRule="evenodd" />
-        <path d={mark.roots} fill="none" stroke="var(--brand-strong)" strokeWidth={mark.rootWidth} strokeLinecap="round" />
-        <path d={mark.water} fill="none" stroke="var(--accent)" strokeWidth={mark.waterWidth} strokeLinecap="round" />
+        <circle {...mark.disc} fill="var(--brand-soft)" />
+        <path d={mark.ripple} fill="none" stroke="var(--accent)" strokeWidth={mark.rippleWidth} strokeLinecap="round" opacity={mark.rippleOpacity} />
+        <path d={mark.pulse} fill="none" stroke="var(--brand)" strokeWidth={mark.lineWidth} strokeLinecap="round" strokeLinejoin="round" />
+        <path d={mark.river} fill="none" stroke="var(--accent)" strokeWidth={mark.lineWidth} strokeLinecap="round" />
       </g>
       <path d={wordmark.top} fill="var(--ink)" />
-      <path d={wordmark.khulna} fill="var(--brand)" />
+      <path d={wordmark.khulna} fill="var(--accent)" />
     </svg>
   );
 }

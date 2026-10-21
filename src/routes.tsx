@@ -1,4 +1,4 @@
-// One factory per route; `app/(en)` and `app/(bn)/bn` re-export them with a fixed language,
+// One factory per route; `app/(bn)` and `app/(en)/en` re-export them with a fixed language,
 // so both language trees stay identical and fully static.
 import { Suspense } from "react";
 import { notFound } from "next/navigation";

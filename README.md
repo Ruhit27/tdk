@@ -4,7 +4,7 @@ Bilingual (English / বাংলা) directory of specialist doctors in Khulna.
 
 ```bash
 npm install
-npm run dev     # http://localhost:3000  (Bangla at /bn)
+npm run dev     # http://localhost:3000  (Bangla at /, English at /en)
 npm run build   # pre-renders every page
 ```
 
@@ -21,4 +21,4 @@ npm run build   # pre-renders every page
 | Service pages, About, Contact text | `src/content/pages.ts` |
 | Blog posts | `src/content/blog.ts` |
 
-To add a doctor, append an entry to `doctors.json` and drop a square photo at `public/photos/<slug>.webp` (or set `"photo": null` for an initials avatar). Any new name word or disease needs a Bangla entry in `src/data/bn/`, otherwise it shows in English on `/bn` pages.
+To add a doctor, append an entry to `doctors.json` and drop a square photo at `public/photos/<slug>.webp` (or set `"photo": null` for an initials avatar). Any new name word or disease needs a Bangla entry in `src/data/bn/`, otherwise it shows in English on Bangla pages.
