@@ -90,14 +90,14 @@ export function HeroArt({ className = "" }: { className?: string }) {
       {/* Clinic on the bank */}
       <g transform="translate(150 318)">
         <rect x="0" y="0" width="92" height="58" rx="4" fill="#ffffff" />
-        <path d="M-6 2 L46 -22 L98 2 Z" fill="#0d9488" />
+        <path d="M-6 2 L46 -22 L98 2 Z" fill="#0f6b5c" />
         <g fill="#bfe3dd">
           <rect x="10" y="14" width="14" height="12" rx="2" />
           <rect x="68" y="14" width="14" height="12" rx="2" />
           <rect x="10" y="34" width="14" height="12" rx="2" />
           <rect x="68" y="34" width="14" height="12" rx="2" />
         </g>
-        <rect x="36" y="30" width="20" height="28" rx="2" fill="#0d9488" />
+        <rect x="36" y="30" width="20" height="28" rx="2" fill="#0f6b5c" />
         <rect x="40" y="6" width="12" height="16" rx="1.5" fill="#f42a41" />
         <rect x="35" y="11" width="22" height="6" rx="1.5" fill="#f42a41" />
       </g>

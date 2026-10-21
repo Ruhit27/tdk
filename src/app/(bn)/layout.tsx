@@ -3,8 +3,8 @@ import { RootShell } from "@/components/RootShell";
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f6fbfa" },
-    { media: "(prefers-color-scheme: dark)", color: "#071514" },
+    { media: "(prefers-color-scheme: light)", color: "#f5f9f8" },
+    { media: "(prefers-color-scheme: dark)", color: "#061412" },
   ],
 };
 

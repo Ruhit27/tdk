@@ -84,6 +84,9 @@ const en = {
     alsoListed: "Also listed under",
     workplace: "Works at",
     openOn: "Sits on",
+    profile: "Profile",
+    outsideKhulna: "This doctor's listed chamber is in {city}, not Khulna.",
+    readMore: "Read more",
   },
   filters: {
     title: "Filter doctors",
@@ -217,6 +220,9 @@ const bn: Dict = {
     alsoListed: "আরও যে বিভাগে আছেন",
     workplace: "কর্মস্থল",
     openOn: "রোগী দেখেন",
+    profile: "পরিচিতি",
+    outsideKhulna: "এই ডাক্তারের তালিকাভুক্ত চেম্বার খুলনায় নয়, {city}-এ।",
+    readMore: "আরও পড়ুন",
   },
   filters: {
     title: "ডাক্তার ফিল্টার করুন",

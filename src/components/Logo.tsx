@@ -1,17 +1,17 @@
-import type { Lang } from "@/lib/site";
+import { lockupMarkScale, lockupViewBox, mark, wordmark } from "@/lib/brand";
+import { site } from "@/lib/site";
 
-export function Logo({ lang }: { lang: Lang }) {
+// English on both language trees: the wordmark is the brand name, not translated copy.
+export function Logo({ className = "h-9 w-auto sm:h-10" }: { className?: string }) {
   return (
-    <span className="flex items-center gap-2">
-      <span className="grid size-9 place-items-center rounded-xl bg-brand text-brand-ink shadow-sm">
-        <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" aria-hidden>
-          <path d="M12 5v14M5 12h14" />
-        </svg>
-      </span>
-      <span className="leading-tight">
-        <span className="block text-[15px] font-bold tracking-tight">{lang === "bn" ? "টপ ডক্টরস" : "Top Doctors"}</span>
-        <span className="block text-[11px] font-medium uppercase tracking-[0.18em] text-brand-strong">{lang === "bn" ? "খুলনা" : "Khulna"}</span>
-      </span>
-    </span>
+    <svg viewBox={lockupViewBox} className={className} role="img" aria-label={site.nameEn}>
+      <g transform={`scale(${lockupMarkScale})`}>
+        <path d={mark.leaf} fill="var(--brand)" fillRule="evenodd" />
+        <path d={mark.roots} fill="none" stroke="var(--brand-strong)" strokeWidth={mark.rootWidth} strokeLinecap="round" />
+        <path d={mark.water} fill="none" stroke="var(--accent)" strokeWidth={mark.waterWidth} strokeLinecap="round" />
+      </g>
+      <path d={wordmark.top} fill="var(--ink)" />
+      <path d={wordmark.khulna} fill="var(--brand)" />
+    </svg>
   );
 }

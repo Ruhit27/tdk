@@ -74,6 +74,16 @@ export const doctorPost = (d: Doctor, lang: Lang) => (lang === "bn" ? bnTerm(d.p
 export const placeName = (s: string, lang: Lang) => (lang === "bn" ? bnTerm(s) : s);
 export const diseaseName = (s: string, lang: Lang) => (lang === "bn" ? bnDisease(s) : s);
 
+// A few listed doctors sit only in Dhaka, Jashore or Barisal; their pages must not claim Khulna.
+const cities = { Dhaka: "ঢাকা", Jashore: "যশোর", Barisal: "বরিশাল", Khulna: "খুলনা" } as const;
+export type City = keyof typeof cities;
+export const cityOf = (chamber: string): City => (chamber.match(/(Dhaka|Jashore|Barisal)\s*$/i)?.[1].replace(/^./, (c) => c.toUpperCase()) as City) ?? "Khulna";
+/** Where the Doctor sees patients: Khulna if any chamber is there, else the first chamber's city. */
+export const doctorCity = (d: Doctor): City => (d.chambers.some((c) => cityOf(c.name) === "Khulna") || !d.chambers[0] ? "Khulna" : cityOf(d.chambers[0].name));
+export const cityName = (c: City, lang: Lang) => (lang === "bn" ? cities[c] : c);
+/** Chamber name without its street address: "Mirpur General Hospital (Plot#10, …), Dhaka" → "Mirpur General Hospital, Dhaka". */
+export const shortChamber = (s: string, lang: Lang) => placeName(s, lang).replace(/\s*\(.*\)/, ""); // greedy: addresses nest brackets
+
 export function money(n: number | null | undefined, lang: Lang) {
   if (n == null) return lang === "bn" ? "জানতে কল করুন" : "Call to ask";
   if (n === 0) return lang === "bn" ? "ফ্রি" : "Free";

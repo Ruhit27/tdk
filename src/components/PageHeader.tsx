@@ -1,13 +1,21 @@
 import Link from "next/link";
 import { dictionaries } from "@/lib/dictionary";
-import { href, type Lang } from "@/lib/site";
+import { href, site, type Lang } from "@/lib/site";
 import { IconTile, type IconName, type Tone } from "@/components/AppIcon";
+import { JsonLd } from "@/components/JsonLd";
 
 export function PageHeader({ lang, title, body, crumbs = [], icon, tone = "teal" }: { lang: Lang; title: string; body?: string; crumbs?: { label: string; to?: string }[]; icon?: IconName; tone?: Tone }) {
   const t = dictionaries[lang];
   const trail = [{ label: t.nav.home, to: href(lang, "/") }, ...crumbs];
+  // The visible trail doubles as BreadcrumbList data; the current page (no link) needs no `item`.
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: trail.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.label, ...(c.to ? { item: `${site.url}${c.to}` } : {}) })),
+  };
   return (
     <section className="border-b border-line bg-gradient-to-b from-brand-soft/60 to-transparent">
+      <JsonLd data={jsonLd} />
       <div className="container-x py-8 sm:py-12">
         <nav aria-label="Breadcrumb" className="mb-3 flex flex-wrap items-center gap-1.5 text-xs text-ink-2">
           {trail.map((c, i) => (

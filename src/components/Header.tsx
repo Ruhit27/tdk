@@ -60,7 +60,7 @@ export function Header({ lang }: { lang: Lang }) {
         </div>
 
         <Link href={href(lang, "/")} className="justify-self-center" aria-label={t.siteName}>
-          <Logo lang={lang} />
+          <Logo />
         </Link>
 
         <div className="flex items-center justify-end gap-1">

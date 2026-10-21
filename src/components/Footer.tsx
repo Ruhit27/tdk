@@ -29,7 +29,7 @@ export function Footer({ lang }: { lang: Lang }) {
     <footer className="mt-16 border-t border-line bg-surface">
       <div className="container-x grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <Logo lang={lang} />
+          <Logo />
           <p className="mt-4 text-sm leading-relaxed text-ink-2">{t.footer.about}</p>
           <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-ink-2">{t.footer.bookingLine}</p>
           <div className="mt-2 flex flex-wrap gap-2">

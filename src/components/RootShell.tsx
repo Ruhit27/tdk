@@ -10,11 +10,11 @@ const themeScript = `try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&
 
 export function RootShell({ lang, children }: { lang: Lang; children: React.ReactNode }) {
   return (
-    <html lang={lang} className={`${inter.variable} ${kalpurush.variable} antialiased`} suppressHydrationWarning>
+    <html lang={lang} data-scroll-behavior="smooth" className={`${inter.variable} ${kalpurush.variable} antialiased`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="min-h-dvh flex flex-col">
+      <body className="min-h-dvh flex flex-col" suppressHydrationWarning>
         <Header lang={lang} />
         <main className="flex-1 pb-24 md:pb-0">{children}</main>
         <Footer lang={lang} />

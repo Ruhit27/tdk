@@ -9,6 +9,7 @@ import { SearchBox } from "@/components/SearchBox";
 import { ArrowIcon, PhoneIcon, WhatsAppIcon } from "@/components/icons";
 import { IconTile } from "@/components/AppIcon";
 import { HeroArt } from "@/components/HeroArt";
+import { JsonLd } from "@/components/JsonLd";
 
 export function HomeView({ lang }: { lang: Lang }) {
   const t = dictionaries[lang];
@@ -23,8 +24,28 @@ export function HomeView({ lang }: { lang: Lang }) {
     { ...t.services.india, icon: "plane" as const, color: "violet" as const, to: href(lang, "/india-treatment"), tone: "from-violet-500/15" },
   ];
 
+  const home = `${site.url}${href(lang, "/")}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${site.url}/#org`,
+        name: site.nameEn,
+        alternateName: site.nameBn,
+        url: site.url,
+        logo: `${site.url}/brand/icon-512.png`,
+        description: t.tagline,
+        areaServed: { "@type": "City", name: "Khulna" },
+        contactPoint: { "@type": "ContactPoint", telephone: site.phoneTel, contactType: "customer service", areaServed: "BD", availableLanguage: ["en", "bn"] },
+      },
+      { "@type": "WebSite", url: home, name: t.siteName, inLanguage: lang === "bn" ? "bn-BD" : "en", publisher: { "@id": `${site.url}/#org` } },
+    ],
+  };
+
   return (
     <>
+      <JsonLd data={jsonLd} />
       <section className="relative overflow-hidden border-b border-line">
         <div aria-hidden className="absolute inset-0 -z-10 bg-[radial-gradient(60rem_30rem_at_80%_-10%,var(--brand-soft),transparent),radial-gradient(40rem_20rem_at_0%_110%,color-mix(in_srgb,var(--accent)_18%,transparent),transparent)]" />
         <div className="container-x grid items-center gap-10 py-10 sm:py-16 lg:grid-cols-[1.2fr_1fr]">

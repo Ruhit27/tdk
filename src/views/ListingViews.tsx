@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { specialties, type Specialty } from "@/data/specialties";
 import { dictionaries, fill } from "@/lib/dictionary";
-import { bySeniority, designations, doctors, doctorsInSpecialty, type Designation } from "@/lib/doctors";
+import { bySeniority, designations, doctorName, doctors, doctorsInSpecialty, type Designation, type Doctor } from "@/lib/doctors";
 import { bnDigits } from "@/lib/bangla";
-import { href, type Lang } from "@/lib/site";
+import { href, site, type Lang } from "@/lib/site";
+import { JsonLd } from "@/components/JsonLd";
 import { DoctorCard, DoctorGrid } from "@/components/DoctorCard";
 import { PageHeader } from "@/components/PageHeader";
 import { doctorListSlug } from "@/content/doctor-lists";
@@ -12,12 +13,27 @@ import { AppIcon, IconTile, toneText } from "@/components/AppIcon";
 
 const count = (n: number, lang: Lang) => fill(dictionaries[lang].doctorsCount, { n: lang === "bn" ? bnDigits(n) : n });
 
+/** The listed Doctors as a schema.org ItemList, in the order shown. */
+function DoctorItemList({ list, lang }: { list: Doctor[]; lang: Lang }) {
+  return (
+    <JsonLd
+      data={{
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        numberOfItems: list.length,
+        itemListElement: list.map((d, i) => ({ "@type": "ListItem", position: i + 1, name: doctorName(d, lang), url: `${site.url}${href(lang, `/doctors/${d.slug}`)}` })),
+      }}
+    />
+  );
+}
+
 export function SpecialtyView({ specialty: s, lang }: { specialty: Specialty; lang: Lang }) {
   const t = dictionaries[lang];
   const list = bySeniority(doctorsInSpecialty(s.slug));
   const title = lang === "bn" ? `${s.bnPerson} — খুলনা` : `${s.enPerson}s in Khulna`;
   return (
     <>
+      <DoctorItemList list={list} lang={lang} />
       <PageHeader
         lang={lang}
         icon={s.icon}
@@ -102,9 +118,15 @@ export function DesignationView({ slug, lang }: { slug: Designation; lang: Lang 
   const t = dictionaries[lang];
   const d = designations.find((x) => x.slug === slug)!;
   const list = bySeniority(doctors.filter((x) => x.designation === slug));
+  const k = new Set(list.map((x) => x.specialty)).size;
+  const body =
+    lang === "bn"
+      ? `খুলনার ${bnDigits(list.length)} জন ${d.bn}, ${bnDigits(k)}টি বিভাগে। যাঁরা এখন রোগী দেখছেন তাঁরা আগে। চেম্বার, সময়সূচি ও ফি দেখতে ডাক্তারের নামে চাপ দিন, তারপর বুকিং লাইনে কল করে সিরিয়াল নিন।`
+      : `${list.length} ${d.en.toLowerCase()}${list.length === 1 ? "" : "s"} in Khulna across ${k} specialt${k === 1 ? "y" : "ies"}, with those currently seeing patients first. Open a doctor for their chamber, visiting hours and fee, then call the Booking Line for a serial.`;
   return (
     <>
-      <PageHeader lang={lang} title={lang === "bn" ? d.bn : `${d.en}s`} body={count(list.length, lang)} crumbs={[{ label: t.nav.designation }, { label: lang === "bn" ? d.bn : d.en }]} />
+      <DoctorItemList list={list} lang={lang} />
+      <PageHeader lang={lang} title={lang === "bn" ? `খুলনার ${d.bn}` : `${d.en}s in Khulna`} body={body} crumbs={[{ label: t.nav.designation }, { label: lang === "bn" ? d.bn : d.en }]} />
       <div className="container-x mt-6">
         <div className="no-scrollbar -mx-4 mb-6 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:px-0">
           {designations.map((x) => (
