@@ -2,34 +2,35 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Mangrove green and river blue, from the logo; src/lib/brand.ts mirrors these for icons and share images. */
 :root {
-  --bg: #f6fbfa;
+  --bg: #f5f9f8;
   --surface: #ffffff;
-  --surface-2: #eef7f5;
-  --ink: #0f2a2a;
-  --ink-2: #4a6463;
-  --line: #d9e9e6;
-  --brand: #0d9488;
+  --surface-2: #ecf5f2;
+  --ink: #0d2622;
+  --ink-2: #4a615d;
+  --line: #d6e6e1;
+  --brand: #0f6b5c;
   --brand-ink: #ffffff;
-  --brand-soft: #ccfbf1;
-  --brand-strong: #0f766e;
-  --accent: #f59e0b;
+  --brand-soft: #d5efe7;
+  --brand-strong: #0a4f44;
+  --accent: #2a78c2;
   --danger: #dc2626;
   --wa: #16a34a;
 }
 
 .dark {
-  --bg: #071514;
-  --surface: #0d201f;
-  --surface-2: #122b29;
-  --ink: #e3f4f1;
-  --ink-2: #9dbdb9;
-  --line: #1f3d3a;
-  --brand: #2dd4bf;
-  --brand-ink: #042f2b;
-  --brand-soft: #134e48;
-  --brand-strong: #5eead4;
-  --accent: #fbbf24;
+  --bg: #061412;
+  --surface: #0c1f1c;
+  --surface-2: #112a26;
+  --ink: #e2f2ee;
+  --ink-2: #9bb8b2;
+  --line: #1d3a35;
+  --brand: #3fcfb0;
+  --brand-ink: #032b24;
+  --brand-soft: #12463d;
+  --brand-strong: #7fe3cc;
+  --accent: #6cb6f0;
   --danger: #f87171;
   --wa: #22c55e;
 }

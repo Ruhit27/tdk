@@ -54,7 +54,7 @@ function copy(s: Specialty, list: Doctor[], lang: Lang): PostCopy {
   if (lang === "bn") {
     const p = s.bnPerson;
     return {
-      title: `খুলনার সেরা ${n(count, lang)} জন ${p} (${bnDigits(YEAR)}): চেম্বার, ফি ও সময়সূচি`,
+      title: `খুলনার সেরা ${n(count, lang)} জন ${p} (${bnDigits(YEAR)}): অভিজ্ঞতা অনুযায়ী তালিকা`,
       excerpt: `খুলনার সব ${p} এক পেজে — পদবি, চেম্বার, বসার দিন ও ভিজিট ফি। সবচেয়ে অভিজ্ঞরা আগে।`,
       answer: `টপ ডক্টরস খুলনায় ${n(count, lang)} জন ${p} তালিকাভুক্ত আছেন — ${makeup(list, lang)}।${senior.length ? ` সবচেয়ে অভিজ্ঞদের মধ্যে আছেন ${join(senior, lang)}।` : ""}${fees ? ` নতুন রোগীর ভিজিট ফি ${fees}।` : ""} যেকোনো ডাক্তারের সিরিয়াল নিতে বুকিং লাইন ${phone} নম্বরে কল বা হোয়াটসঅ্যাপ করুন।`,
       cover: { src: `/blog/${slug}.svg`, alt: `খুলনার সেরা ${p}দের তালিকা — ${s.bn} বিভাগের ডাক্তার` },
@@ -77,7 +77,8 @@ function copy(s: Specialty, list: Doctor[], lang: Lang): PostCopy {
   const P = plural(s);
   const p = P.toLowerCase().replace(/^ent /, "ENT ");
   return {
-    title: `${count} Best ${P} in Khulna (${YEAR}): Chambers, Fees & Schedule`,
+    // The tail is dropped for long specialty names so the title still fits in search results.
+    title: [`${count} Best ${P} in Khulna (${YEAR})`, ", Most Senior First"].reduce((a, b) => (a.length + b.length <= 60 ? a + b : a)),
     excerpt: `Every ${s.enPerson.toLowerCase().replace(/^ent /, "ENT ")} in Khulna on one page — designation, chamber, visiting days and fee, with the most senior listed first.`,
     answer: `Top Doctors Khulna lists ${count} ${p} in Khulna: ${makeup(list, lang)}.${senior.length ? ` The most senior include ${join(senior, lang)}.` : ""}${fees ? ` New-patient fees range from ${fees}.` : ""} Call or WhatsApp the Booking Line on ${phone} to book a serial with any of them.`,
     cover: { src: `/blog/${slug}.svg`, alt: `List of the best ${p} in Khulna — ${s.en} doctors` },
@@ -217,7 +218,7 @@ function fridayCopy(list: Doctor[], lang: Lang): PostCopy {
     };
   }
   return {
-    title: `Doctors Open on Friday in Khulna (${YEAR}): ${count} Specialists Who Sit on Friday`,
+    title: `${count} Doctors Open on Friday in Khulna (${YEAR})`,
     excerpt: "Most chambers in Khulna close on Friday. These specialists see patients on Friday — with their chambers and hours.",
     answer: `Most chambers in Khulna close on Friday, but ${count} specialists in our directory see patients on Friday: ${join(mix.map((m) => `${m.label}s`), lang)}. Their Friday chambers and hours are below. Friday serials fill quickly, so call the Booking Line on ${phone} early.`,
     cover: { ...cover, alt: "A calendar with Friday highlighted — doctors open on Friday in Khulna" },

@@ -2,14 +2,35 @@ import Link from "next/link";
 import { Info } from "lucide-react";
 import { specialtyBySlug } from "@/data/specialties";
 import { dictionaries, fill } from "@/lib/dictionary";
-import { days, dayNames, designations, diseaseName, doctorName, doctorPost, doctorsInSpecialty, formatHours, money, openDays, placeName, specialtyOf, type Doctor } from "@/lib/doctors";
+import { cityName, days, dayNames, designations, diseaseName, doctorCity, doctorName, doctorPost, doctorsInSpecialty, formatHours, money, openDays, placeName, specialtyOf, type Day, type Doctor } from "@/lib/doctors";
+import { posts } from "@/content/blog";
+import { doctorListSlug } from "@/content/doctor-lists";
 import { href, site, whatsappLink, type Lang } from "@/lib/site";
 import { bnDigits } from "@/lib/bangla";
 import { Avatar } from "@/components/Avatar";
 import { DoctorCard } from "@/components/DoctorCard";
 import { PageHeader } from "@/components/PageHeader";
+import { JsonLd } from "@/components/JsonLd";
 import { CheckIcon, ClockIcon, GraduationIcon, HospitalIcon, PhoneIcon, PinIcon, WhatsAppIcon } from "@/components/icons";
 import { AppIcon, toneText } from "@/components/AppIcon";
+
+const schemaDay: Record<Day, string> = { sat: "Saturday", sun: "Sunday", mon: "Monday", tue: "Tuesday", wed: "Wednesday", thu: "Thursday", fri: "Friday" };
+/** "05:00 pm" → "17:00"; null when the clock can't be read. */
+function to24(raw: string) {
+  const m = raw.trim().match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)$/i);
+  if (!m) return null;
+  return `${String((Number(m[1]) % 12) + (m[3].toLowerCase() === "pm" ? 12 : 0)).padStart(2, "0")}:${m[2] ?? "00"}`;
+}
+/** schema.org opening hours for one chamber: one entry per day and time range. */
+function openingHours(schedule: Doctor["chambers"][number]["schedule"]) {
+  return schedule.flatMap((s) =>
+    (s.time ?? "")
+      .split(/\s+and\s+/i)
+      .map((range) => range.split(/\s+to\s+/i).map(to24))
+      .filter((r): r is [string, string] => r.length === 2 && r.every(Boolean))
+      .map(([opens, closes]) => ({ "@type": "OpeningHoursSpecification", dayOfWeek: schemaDay[s.day], opens, closes })),
+  );
+}
 
 export function DoctorView({ doctor: d, lang }: { doctor: Doctor; lang: Lang }) {
   const t = dictionaries[lang];
@@ -23,6 +44,12 @@ export function DoctorView({ doctor: d, lang }: { doctor: Doctor; lang: Lang }) 
     .filter((x) => x.slug !== d.slug)
     .slice(0, 3);
   const open = openDays(d);
+  const city = doctorCity(d);
+  // The Doctor List Post for this specialty first, then guides about it.
+  const reading = posts
+    .filter((p) => p.related.includes(d.specialty))
+    .sort((a, b) => Number(b.slug === doctorListSlug(sp)) - Number(a.slug === doctorListSlug(sp)))
+    .slice(0, 3);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -30,14 +57,18 @@ export function DoctorView({ doctor: d, lang }: { doctor: Doctor; lang: Lang }) 
     name: d.name,
     medicalSpecialty: sp.en,
     description: `${d.degrees}. ${d.post}`.trim(),
+    url: `${site.url}${href(lang, `/doctors/${d.slug}`)}`,
     image: d.photo ? `${site.url}${d.photo}` : undefined,
-    telephone: site.phoneTel,
-    address: { "@type": "PostalAddress", addressLocality: "Khulna", addressCountry: "BD", streetAddress: d.chambers[0]?.name },
+    priceRange: typeof d.fees.new === "number" && d.fees.new > 0 ? `৳${d.fees.new}` : undefined,
+    address: { "@type": "PostalAddress", addressLocality: city, addressCountry: "BD", streetAddress: d.chambers[0]?.name },
+    openingHoursSpecification: d.chambers[0] ? openingHours(d.chambers[0].schedule) : undefined,
+    // The number is the Booking Line, not the doctor's own, so it is offered as a way to book.
+    potentialAction: { "@type": "ReserveAction", target: { "@type": "EntryPoint", urlTemplate: `tel:${site.phoneTel}` } },
   };
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <JsonLd data={jsonLd} />
       <PageHeader
         lang={lang}
         title={name}
@@ -49,7 +80,10 @@ export function DoctorView({ doctor: d, lang }: { doctor: Doctor; lang: Lang }) 
       />
       <div className="container-x mt-8 grid gap-6 lg:grid-cols-[1fr_22rem]">
         <div className="space-y-6">
-          <section className="card flex flex-col gap-5 p-5 sm:flex-row sm:p-6">
+          <section className="card flex flex-col gap-5 p-5 sm:flex-row sm:p-6" aria-labelledby="profile">
+            <h2 id="profile" className="sr-only">
+              {t.doctor.profile}
+            </h2>
             <Avatar name={name} photo={d.photo} size={144} priority className="!rounded-3xl" />
             <div className="min-w-0">
               <Link href={href(lang, `/specialties/${sp.slug}`)} className="chip !bg-brand-soft font-medium text-brand-strong">
@@ -88,6 +122,12 @@ export function DoctorView({ doctor: d, lang }: { doctor: Doctor; lang: Lang }) 
                   </span>
                 ))}
               </div>
+              {city !== "Khulna" && (
+                <p className="mt-3 flex items-start gap-2 rounded-xl bg-surface-2 p-3 text-xs text-ink-2">
+                  <Info className="mt-px size-4 shrink-0" aria-hidden />
+                  {fill(t.doctor.outsideKhulna, { city: cityName(city, lang) })}
+                </p>
+              )}
               {d.alsoIn.length > 0 && (
                 <p className="mt-3 text-xs text-ink-2">
                   {t.doctor.alsoListed}:{" "}
@@ -193,6 +233,20 @@ export function DoctorView({ doctor: d, lang }: { doctor: Doctor; lang: Lang }) 
               ))}
             </dl>
           </section>
+          {reading.length > 0 && (
+            <section className="card p-5">
+              <h2 className="text-lg font-bold">{t.doctor.readMore}</h2>
+              <ul className="mt-3 space-y-2 text-sm">
+                {reading.map((p) => (
+                  <li key={p.slug}>
+                    <Link href={href(lang, `/blog/${p.slug}`)} className="text-brand-strong hover:underline">
+                      {p[lang].title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
         </aside>
       </div>
 

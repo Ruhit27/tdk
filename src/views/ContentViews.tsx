@@ -11,6 +11,7 @@ import { dictionaries, fill } from "@/lib/dictionary";
 import { bnDigits } from "@/lib/bangla";
 import { href, site, whatsappLink, type Lang } from "@/lib/site";
 import { PageHeader } from "@/components/PageHeader";
+import { JsonLd } from "@/components/JsonLd";
 import { FaqsSection } from "@/components/ui/faqs-1";
 import { ArrowIcon, CheckIcon, PhoneIcon, WhatsAppIcon } from "@/components/icons";
 import { AppIcon, IconTile, toneText } from "@/components/AppIcon";
@@ -215,7 +216,7 @@ function DoctorBlock({ query, lang }: { query: DoctorQuery; lang: Lang }) {
 
 const num = (n: number, lang: Lang) => (lang === "bn" ? bnDigits(n) : String(n));
 
-/** Article + FAQPage + BreadcrumbList, so search engines and AI answers can quote the Post and its FAQ. */
+/** Article + FAQPage (PageHeader adds the BreadcrumbList), so search engines and AI answers can quote the Post and its FAQ. */
 function postJsonLd(post: Post, lang: Lang) {
   const t = dictionaries[lang];
   const c = post[lang];
@@ -242,13 +243,6 @@ function postJsonLd(post: Post, lang: Lang) {
         "@type": "FAQPage",
         mainEntity: c.faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
       },
-      {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: t.nav.blog, item: `${site.url}${href(lang, "/blog")}` },
-          { "@type": "ListItem", position: 2, name: c.title, item: url },
-        ],
-      },
     ],
   };
 }
@@ -259,7 +253,7 @@ export function BlogPostView({ post, lang }: { post: Post; lang: Lang }) {
   const reviewer = post.reviewer ? doctorBySlug.get(post.reviewer) : undefined;
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(postJsonLd(post, lang)).replace(/</g, "\\u003c") }} />
+      <JsonLd data={postJsonLd(post, lang)} />
       <PageHeader lang={lang} icon={post.icon} tone={post.tone} title={c.title} body={c.excerpt} crumbs={[{ label: t.nav.blog, to: href(lang, "/blog") }, { label: c.title }]} />
       <div className="container-x mt-8 grid gap-8 lg:grid-cols-[1fr_22rem]">
         <article className="prose-site max-w-2xl">
