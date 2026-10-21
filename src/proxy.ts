@@ -15,10 +15,12 @@ const known: Record<string, Set<string>> = {
 export function proxy(request: NextRequest) {
   const [, section, slug] = request.nextUrl.pathname.replace(/^\/bn(?=\/)/, "").split("/");
   if (known[section]?.has(decodeURIComponent(slug))) return NextResponse.next();
-  // No route matches this path, so Next renders the global not-found page with a 404 status.
-  return NextResponse.rewrite(new URL("/404", request.url));
+  // Rewriting to a path no route matches renders the global not-found page. The explicit status matters
+  // on Vercel, which otherwise serves the prerendered /404 page with a 200.
+  return NextResponse.rewrite(new URL("/_not-found-slug", request.url), { status: 404 });
 }
 
+// Slugs never contain a dot; excluding dotted segments keeps static files like /blog/cover.svg out of the proxy.
 export const config = {
-  matcher: ["/(doctors|specialties|designations|blog)/:slug", "/bn/(doctors|specialties|designations|blog)/:slug"],
+  matcher: ["/(doctors|specialties|designations|blog)/:slug([^/.]+)", "/bn/(doctors|specialties|designations|blog)/:slug([^/.]+)"],
 };
