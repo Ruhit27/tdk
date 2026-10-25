@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { TriangleAlert } from "lucide-react";
 import { aboutPage, contactPage, servicePages } from "@/content/pages";
-import { dayListPosts, doctorListPosts, guides, hospitalListPosts, IMAGE_SIZE, priceListPosts, readingMinutes, shareImage, type Post } from "@/content/blog";
+import { dayListPosts, doctorListPosts, guides, hospitalListPosts, IMAGE_SIZE, imageSrc, priceListPosts, readingMinutes, shareImage, type Post } from "@/content/blog";
 import { specialtyBySlug } from "@/data/specialties";
 import { dayNames, doctorBySlug, doctorName, formatHours, placeName } from "@/lib/doctors";
 import { resolveQuery, type DoctorQuery } from "@/lib/doctor-groups";
@@ -150,7 +150,7 @@ export function BlogIndexView({ lang }: { lang: Lang }) {
             <Link key={p.slug} href={href(lang, `/blog/${p.slug}`)} className="card group flex flex-col overflow-hidden transition hover:-translate-y-0.5 hover:shadow-lg">
               {/* Decorative here: the title below already says what the post is about. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={c.cover.src} alt="" {...IMAGE_SIZE} loading="lazy" className="aspect-video w-full object-cover" />
+              <img src={imageSrc(c.cover.src)} alt="" {...IMAGE_SIZE} loading="lazy" className="aspect-video w-full object-cover" />
               <div className="flex flex-1 flex-col p-5">
               <h2 className="font-semibold leading-snug">{c.title}</h2>
               <p className="mt-2 flex-1 text-sm text-ink-2">{c.excerpt}</p>
@@ -277,7 +277,7 @@ export function BlogPostView({ post, lang }: { post: Post; lang: Lang }) {
           </aside>
           {/* Post illustrations are small SVG files, so a plain <img> is enough. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={c.cover.src} alt={c.cover.alt} {...IMAGE_SIZE} fetchPriority="high" className="mt-6 h-auto w-full rounded-2xl" />
+          <img src={imageSrc(c.cover.src)} alt={c.cover.alt} {...IMAGE_SIZE} fetchPriority="high" className="mt-6 h-auto w-full rounded-2xl" />
           {c.body.map((b, i) => (
             <section key={i}>
               {b.h && <h2>{b.h}</h2>}
@@ -305,7 +305,7 @@ export function BlogPostView({ post, lang }: { post: Post; lang: Lang }) {
                 </ul>
               )}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              {b.img && <img src={b.img.src} alt={b.img.alt} {...IMAGE_SIZE} loading="lazy" className="my-6 h-auto w-full rounded-2xl" />}
+              {b.img && <img src={imageSrc(b.img.src)} alt={b.img.alt} {...IMAGE_SIZE} loading="lazy" className="my-6 h-auto w-full rounded-2xl" />}
             </section>
           ))}
           <FaqsSection

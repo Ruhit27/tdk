@@ -9,7 +9,7 @@ const post: Post = {
   en: {
     title: "How to book a doctor's serial through Top Doctors Khulna",
     excerpt: "Find the doctor, check the day, and send one message. Here's the whole process.",
-    answer: "To book a doctor's serial in Khulna through Top Doctors Khulna, find the doctor on the site, check which days they sit, then call or WhatsApp the Booking Line on +880 1701-667283. We book the serial with the chamber and send you the confirmed time.",
+    answer: "To book a doctor's serial in Khulna through Top Doctors Khulna, find the doctor on the site, check which days they sit, then call or WhatsApp the Booking Line on +880 1355-438772. We book the serial with the chamber and send you the confirmed time.",
     cover: { src: "/blog/how-to-book-a-serial.svg", alt: "A phone chat confirming a doctor's serial, with the appointment day ticked on a calendar" },
     body: [
       { h: "1. Find your doctor", p: "Search by the doctor's name, specialty or even a symptom like \"chest pain\". You can also browse by specialty or designation, or filter all doctors by the day you're free and your budget." },
@@ -28,7 +28,7 @@ const post: Post = {
   bn: {
     title: "টপ ডক্টরস খুলনার মাধ্যমে কীভাবে সিরিয়াল নেবেন",
     excerpt: "ডাক্তার খুঁজুন, দিন দেখুন, একটি মেসেজ পাঠান। পুরো প্রক্রিয়াটি এখানে।",
-    answer: "টপ ডক্টরস খুলনার মাধ্যমে ডাক্তারের সিরিয়াল নিতে সাইটে ডাক্তার খুঁজুন, কোন দিন বসেন দেখুন, তারপর বুকিং লাইন +৮৮০ ১৭০১-৬৬৭২৮৩ নম্বরে কল বা হোয়াটসঅ্যাপ করুন। আমরা চেম্বারে সিরিয়াল নিয়ে আপনাকে নিশ্চিত সময় জানিয়ে দেব।",
+    answer: "টপ ডক্টরস খুলনার মাধ্যমে ডাক্তারের সিরিয়াল নিতে সাইটে ডাক্তার খুঁজুন, কোন দিন বসেন দেখুন, তারপর বুকিং লাইন +৮৮০ ১৩৫৫-৪৩৮৭৭২ নম্বরে কল বা হোয়াটসঅ্যাপ করুন। আমরা চেম্বারে সিরিয়াল নিয়ে আপনাকে নিশ্চিত সময় জানিয়ে দেব।",
     cover: { src: "/blog/how-to-book-a-serial.svg", alt: "মোবাইলে মেসেজ পাঠিয়ে ক্যালেন্ডারে ডাক্তারের সিরিয়াল নিশ্চিত করা" },
     body: [
       { h: "১. ডাক্তার খুঁজুন", p: "ডাক্তারের নাম, বিভাগ বা \"বুকে ব্যথা\"-র মতো উপসর্গ লিখে খুঁজুন। বিভাগ বা পদবি অনুযায়ীও দেখতে পারেন, অথবা আপনার সুবিধার দিন ও বাজেট অনুযায়ী ফিল্টার করুন।" },
