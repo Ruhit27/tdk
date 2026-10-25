@@ -30,8 +30,14 @@ export type Faq = { q: string; a: string };
 
 /** Every blog illustration is drawn at this size (16:9); share images are PNG renders of the cover at 1200×630. */
 export const IMAGE_SIZE = { width: 1200, height: 675 } as const;
+/**
+ * Appended to every blog image URL. Browsers that saw these files 404 under an old year-long cache
+ * header keep showing them broken; a new version makes them fetch afresh. Bump it if that recurs.
+ */
+const IMAGE_VERSION = "2";
+export const imageSrc = (src: string) => `${src}?v=${IMAGE_VERSION}`;
 /** The PNG render of a Post's cover, for social previews (they ignore SVG). Posts may share a cover, so it is keyed by the cover file. */
-export const shareImage = (post: { bn: { cover: Image } }) => `/blog/og/${post.bn.cover.src.split("/").pop()!.replace(/\.svg$/, "")}.png`;
+export const shareImage = (post: { bn: { cover: Image } }) => imageSrc(`/blog/og/${post.bn.cover.src.split("/").pop()!.replace(/\.svg$/, "")}.png`);
 
 export type PostCopy = {
   title: string;

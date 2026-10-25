@@ -4,9 +4,9 @@ export const site = {
   // Must be the host Vercel serves (the apex redirects to www), or canonicals point at a redirect.
   url: "https://www.topdoctorskhulna.com",
   // The Booking Line: the single number patients call or WhatsApp for every Service.
-  phoneDisplay: "+880 1701-667283",
-  phoneTel: "+8801701667283",
-  whatsapp: "8801701667283",
+  phoneDisplay: "+880 1355-438772",
+  phoneTel: "+8801355438772",
+  whatsapp: "8801355438772",
 };
 
 export type Lang = "en" | "bn";
